@@ -1,20 +1,4 @@
-interface IProduct {
-  name: string;
-  slug: string;
-  category: string;
-  image: string;
-  price: number;
-  countInStock: number;
-  brand: string;
-  rating: number;
-  numReviews: number;
-  description: string;
-}
-interface Idata {
-  products: IProduct[];
-}
-
-const data: Idata = {
+const data = {
   products: [
     {
       name: "Nike Slim shirt",

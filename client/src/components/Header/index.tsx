@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
-import styles from "./Header.module.scss";
+import { Container, Navbar } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 const Header: React.FC = () => {
   return (
-    <header className={styles.header}>
-      <Link to="/" className={styles.header__link}>
-        Amazonia
-      </Link>
+    <header>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <LinkContainer to="/">
+            <Navbar.Brand>Amazonia</Navbar.Brand>
+          </LinkContainer>
+        </Container>
+      </Navbar>
     </header>
   );
 };

@@ -13,6 +13,12 @@ body {
   font-family: "Nunito", sans-serif;
 }
 
+.site-container {
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
 //! no main styles
 
 .products {

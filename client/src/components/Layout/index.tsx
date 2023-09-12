@@ -1,5 +1,5 @@
+import { Container } from "react-bootstrap";
 import Header from "../Header";
-import styles from "./Layout.module.scss";
 
 type TProps = {
   children: React.ReactNode;
@@ -7,9 +7,13 @@ type TProps = {
 
 const Layout: React.FC<TProps> = ({ children }) => {
   return (
-    <div>
+    <div className="d-flex flex-column site-container">
       <Header />
-      <div className={styles.main}>{children}</div>
+      <Container>
+        <main className="main">{children}</main>
+        <footer className="text-center footer">All rigths reserved</footer>
+      </Container>
+      <></>
     </div>
   );
 };
