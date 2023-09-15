@@ -13,32 +13,17 @@ body {
   font-family: "Nunito", sans-serif;
 }
 
-.site-container {
-  min-height: 100vh;
+//! local styles
+
+.rating span {
+  color: #ffc000;
 }
-main {
-  flex: 1;
+
+.btn-primary {
+  background-color: #ffc000 !important;
+  color: black !important;
 }
-//! no main styles
 
-.products {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-
-  .product {
-    border: 1px solid #404040;
-    margin: 1rem;
-    width: 20%;
-
-    &__info {
-      padding: 1rem;
-    }
-
-    img {
-      width: 100%;
-      max-width: 400px;
-    }
-  }
+.img-large {
+  max-width: 100%;
 }
