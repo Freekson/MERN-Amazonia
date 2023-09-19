@@ -2,10 +2,11 @@ import Layout from "../../components/Layout";
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { IProduct } from "../../types";
-import logger from "use-reducer-logger"; // console log for redux things
 import { Col, Row } from "react-bootstrap";
 import Product from "../../components/Product";
 import { Helmet } from "react-helmet-async";
+import LoadingBox from "../../components/LoadingBox";
+import MessageBox from "../../components/MessageBox";
 
 interface IState {
   loading: boolean;
@@ -38,7 +39,7 @@ const reducer = (state: IState, action: TAction) => {
 };
 
 const Home: React.FC = () => {
-  const [state, dispatch] = useReducer(logger(reducer), initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { loading, error, products } = state;
 
   useEffect(() => {
@@ -61,9 +62,9 @@ const Home: React.FC = () => {
       <h1>Featured products</h1>
       <div className="products">
         {loading ? (
-          <div>Loading...</div>
+          <LoadingBox />
         ) : error ? (
-          <div>Eror {error}</div>
+          <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Row>
             {products &&

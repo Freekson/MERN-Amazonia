@@ -9,7 +9,7 @@ const Rating: React.FC<IRatingProps> = ({ rating, numReviews }) => {
 
   for (let i = 0; i < 5; i++) {
     stars.push(
-      <span>
+      <span key={i}>
         <i
           className={
             rating && rating >= i + 1
