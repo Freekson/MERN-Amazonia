@@ -1,4 +1,5 @@
 export interface IProduct {
+  _id: string;
   name: string;
   slug: string;
   category: string;
@@ -9,6 +10,7 @@ export interface IProduct {
   rating: number;
   numReviews: number;
   description: string;
+  quantity: number;
 }
 export interface IProducts {
   products: IProduct[];

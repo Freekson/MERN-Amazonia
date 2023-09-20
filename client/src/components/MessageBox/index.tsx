@@ -1,7 +1,7 @@
 import { Alert } from "react-bootstrap";
 
 interface IMessageBoxProps {
-  variant: "info" | string;
+  variant?: string | "info";
   children: React.ReactNode;
 }
 

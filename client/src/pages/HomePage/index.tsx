@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../../components/LoadingBox";
 import MessageBox from "../../components/MessageBox";
 
+//TODO: переписать это под редакс тулкит потому что эта хуйня блять не ререндерится и всё идёт по пизде
 interface IState {
   loading: boolean;
   products: IProduct[] | null;
@@ -38,7 +39,7 @@ const reducer = (state: IState, action: TAction) => {
   }
 };
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { loading, error, products } = state;
 
@@ -80,4 +81,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default HomePage;

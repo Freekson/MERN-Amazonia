@@ -1,14 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.scss";
-import Home from "./pages/Home";
-import Product from "./pages/Product";
+import HomePage from "./pages/HomePage";
+import ProductPage from "./pages/ProductPage";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/product/:slug" element={<Product />}></Route>
+        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/product/:slug" element={<ProductPage />}></Route>
+        <Route path="/cart" element={<CartPage />}></Route>
       </Routes>
     </div>
   );

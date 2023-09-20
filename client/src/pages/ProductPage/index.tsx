@@ -9,6 +9,8 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../../components/LoadingBox";
 import MessageBox from "../../components/MessageBox";
 import { getError } from "../../utils/getError";
+import { addItem } from "../../redux/cart/slice";
+import { useDispatch } from "react-redux";
 
 interface IState {
   loading: boolean;
@@ -40,11 +42,15 @@ const reducer = (state: IState, action: TAction) => {
   }
 };
 
-const Product: React.FC = () => {
+const ProductPage: React.FC = () => {
   const { slug } = useParams();
   const [state, dispatch] = useReducer(reducer, initialState);
   const { loading, error, product } = state;
+  const dispatchT = useDispatch();
 
+  const addToCart = () => {
+    dispatchT(addItem(product));
+  };
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
@@ -118,7 +124,9 @@ const Product: React.FC = () => {
                     {product && product.countInStock > 0 && (
                       <ListGroup.Item>
                         <div className="d-grid">
-                          <Button variant="primary">Add to cart</Button>
+                          <Button variant="primary" onClick={addToCart}>
+                            Add to cart
+                          </Button>
                         </div>
                       </ListGroup.Item>
                     )}
@@ -133,4 +141,4 @@ const Product: React.FC = () => {
   );
 };
 
-export default Product;
+export default ProductPage;
