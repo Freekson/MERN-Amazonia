@@ -16,11 +16,11 @@ const cartSlice = createSlice({
         (item) => item._id === action.payload._id
       );
       if (inCart) {
-        inCart.quantity = inCart ? inCart.quantity + 1 : 1;
-        if (inCart.countInStock < inCart.quantity) {
+        if (inCart.countInStock <= inCart.quantity) {
           window.alert("Sorry, product is out of the stock");
-          inCart.quantity = inCart.quantity - 1;
           return;
+        } else {
+          inCart.quantity = inCart ? inCart.quantity + 1 : 1;
         }
       }
       if (!inCart) {

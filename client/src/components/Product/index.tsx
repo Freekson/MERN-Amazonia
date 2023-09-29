@@ -14,11 +14,11 @@ interface IProductProps {
 const Product: React.FC<IProductProps> = ({ product }) => {
   const dispatch = useDispatch();
 
+  const { cartItems } = useSelector((state: RootState) => state.cart);
+
   const addToCart = () => {
     dispatch(addItem(product));
   };
-  const id: number = Number(product._id);
-  console.log(id);
 
   return (
     <Card>
@@ -31,7 +31,10 @@ const Product: React.FC<IProductProps> = ({ product }) => {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>{product.price}$</Card.Text>
-        {product.countInStock === product.quantity ? (
+        {product.countInStock ===
+        (cartItems[Number(product._id) - 1] === undefined
+          ? 1
+          : cartItems[Number(product._id) - 1].quantity) ? (
           <Button variant="light" disabled>
             Out of stock
           </Button>
