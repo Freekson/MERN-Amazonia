@@ -1,101 +1,74 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import Layout from "../../components/Layout";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { IProduct } from "../../types";
 import { Badge, Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import Rating from "../../components/Rating";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../../components/LoadingBox";
 import MessageBox from "../../components/MessageBox";
-import { getError } from "../../utils/getError";
 import { addItem } from "../../redux/cart/slice";
-import { useDispatch } from "react-redux";
-
-interface IState {
-  loading: boolean;
-  product: IProduct | null;
-  error: string;
-}
-
-type TAction =
-  | { type: "FETCH_REQUEST" }
-  | { type: "FETCH_SUCCESS"; payload: IProduct }
-  | { type: "FETCH_FAIL"; payload: string };
-
-const initialState: IState = {
-  loading: true,
-  product: null,
-  error: "",
-};
-
-const reducer = (state: IState, action: TAction) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, product: action.payload, loading: false };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../redux/store";
+import { fetchProduct } from "../../redux/product/slice";
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams();
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { loading, error, product } = state;
-  const dispatchT = useDispatch();
+  const dispatch = useAppDispatch();
+  const { cartItems } = useSelector((state: RootState) => state.cart);
+
+  const { products, status } = useSelector(
+    (state: RootState) => state.products
+  );
 
   const addToCart = () => {
-    dispatchT(addItem(product));
+    dispatch(addItem(products[0]));
   };
+
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
-      try {
-        const res = await axios.get(`/api/products/slug/${slug}`);
-        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
-      } catch (err: any) {
-        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
-      }
-    };
-    fetchData();
-  }, [slug]);
+    if (slug) {
+      const fetchData = async () => {
+        dispatch(fetchProduct({ slug }));
+      };
+      fetchData();
+    }
+  }, [dispatch, slug]);
+
+  const item = cartItems.find((item) => item._id === products[0]?._id);
+  const inStock = !(products[0]?.countInStock === item?.quantity);
+
   return (
     <Layout>
-      {loading ? (
+      {status === "loading" ? (
         <LoadingBox />
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
+      ) : status === "error" ? (
+        <MessageBox variant="danger">An error occurred 😕</MessageBox>
       ) : (
         <div>
           <Row>
             <Col md={6}>
               <img
                 className="img-large"
-                src={product?.image}
-                alt={product?.name}
+                src={products[0]?.image}
+                alt={products[0]?.name}
               />
             </Col>
             <Col md={3}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Helmet>
-                    <title>{product?.name}</title>
+                    <title>{products[0]?.name}</title>
                   </Helmet>
-                  <h1>{product?.name}</h1>
+                  <h1>{products[0]?.name}</h1>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
-                    rating={product?.rating}
-                    numReviews={product?.numReviews}
+                    rating={products[0]?.rating}
+                    numReviews={products[0]?.numReviews}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: {product?.price}$</ListGroup.Item>
+                <ListGroup.Item>Price: {products[0]?.price}$</ListGroup.Item>
                 <ListGroup.Item>
-                  Description: {product?.description}
+                  Description: {products[0]?.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -106,30 +79,36 @@ const ProductPage: React.FC = () => {
                     <ListGroup.Item>
                       <Row>
                         <Col>Price:</Col>
-                        <Col>${product?.price}</Col>
+                        <Col>${products[0]?.price}</Col>
                       </Row>
                     </ListGroup.Item>
                     <ListGroup.Item>
                       <Row>
                         <Col>Status:</Col>
                         <Col>
-                          {product && product.countInStock > 0 ? (
+                          {inStock ? (
                             <Badge bg="success">In Stock</Badge>
                           ) : (
-                            <Badge bg="dabges">Unaviable</Badge>
+                            <Badge bg="danger">Unaviable</Badge>
                           )}
                         </Col>
                       </Row>
                     </ListGroup.Item>
-                    {product && product.countInStock > 0 && (
-                      <ListGroup.Item>
-                        <div className="d-grid">
-                          <Button variant="primary" onClick={addToCart}>
-                            Add to cart
+                    <ListGroup.Item>
+                      <div className="d-grid">
+                        {inStock ? (
+                          <Button className="btn-primary" onClick={addToCart}>
+                            {item === undefined
+                              ? "Add to Cart"
+                              : `In cart: ${item.quantity}`}
                           </Button>
-                        </div>
-                      </ListGroup.Item>
-                    )}
+                        ) : (
+                          <Button variant="light" disabled>
+                            Out of stock
+                          </Button>
+                        )}
+                      </div>
+                    </ListGroup.Item>
                   </ListGroup>
                 </Card.Body>
               </Card>

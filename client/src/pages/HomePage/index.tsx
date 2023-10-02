@@ -9,8 +9,6 @@ import { fetchProducts } from "../../redux/product/slice";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { useSelector } from "react-redux";
 
-//TODO: переписать это под редакс тулкит потому что эта хуйня блять не ререндерится и всё идёт по пизде
-
 const HomePage: React.FC = () => {
   const dispatch = useAppDispatch();
 

@@ -10,3 +10,7 @@ export interface ProductState {
   products: IProduct[];
   status: Status;
 }
+
+export type ProductParams = {
+  slug: String;
+};

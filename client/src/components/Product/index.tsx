@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../redux/cart/slice";
 import { RootState } from "../../redux/store";
 
-//TODO: тут нужно заимпортить слайс с продуктами, но сначала переписать код в HomePage
 interface IProductProps {
   product: IProduct;
 }
@@ -20,6 +19,9 @@ const Product: React.FC<IProductProps> = ({ product }) => {
     dispatch(addItem(product));
   };
 
+  const item = cartItems.find((item) => item._id === product._id);
+  const inStock = !(product.countInStock === item?.quantity);
+
   return (
     <Card>
       <Link to={`/product/${product.slug}`}>
@@ -31,16 +33,13 @@ const Product: React.FC<IProductProps> = ({ product }) => {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>{product.price}$</Card.Text>
-        {product.countInStock ===
-        (cartItems[Number(product._id) - 1] === undefined
-          ? 1
-          : cartItems[Number(product._id) - 1].quantity) ? (
-          <Button variant="light" disabled>
-            Out of stock
+        {inStock ? (
+          <Button className="btn-primary" onClick={addToCart}>
+            {item === undefined ? "Add to Cart" : `In cart: ${item.quantity}`}
           </Button>
         ) : (
-          <Button className="btn-primary" onClick={addToCart}>
-            Add to cart
+          <Button variant="light" disabled>
+            Out of stock
           </Button>
         )}
       </Card.Body>

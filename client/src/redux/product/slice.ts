@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductState, Status } from "./types";
+import { ProductParams, ProductState, Status } from "./types";
 import { IProduct } from "../../types";
 import axios from "axios";
 
@@ -16,6 +16,13 @@ export const fetchProducts = createAsyncThunk(
     return data;
   }
 );
+export const fetchProduct = createAsyncThunk<IProduct, ProductParams>(
+  "pizza/fetchPizzasStatus",
+  async ({ slug }) => {
+    const { data } = await axios.get<IProduct>(`/api/products/slug/${slug}`);
+    return data;
+  }
+);
 
 const productSlice = createSlice({
   name: "product",
@@ -25,7 +32,6 @@ const productSlice = createSlice({
       state.products = action.payload;
     },
   },
-
   extraReducers: (builder) => {
     builder.addCase(fetchProducts.pending, (state) => {
       state.products = [];
@@ -36,6 +42,19 @@ const productSlice = createSlice({
       state.status = Status.SUCCESS;
     });
     builder.addCase(fetchProducts.rejected, (state) => {
+      state.products = [];
+      state.status = Status.ERROR;
+    });
+
+    builder.addCase(fetchProduct.pending, (state) => {
+      state.products = [];
+      state.status = Status.LOADING;
+    });
+    builder.addCase(fetchProduct.fulfilled, (state, action) => {
+      state.products[0] = action.payload;
+      state.status = Status.SUCCESS;
+    });
+    builder.addCase(fetchProduct.rejected, (state) => {
       state.products = [];
       state.status = Status.ERROR;
     });
