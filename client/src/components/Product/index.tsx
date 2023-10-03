@@ -36,7 +36,7 @@ const Product: React.FC<IProductProps> = ({ product }) => {
         {inStock ? (
           <Button className="btn-primary" onClick={addToCart}>
             {item === undefined ? "Add to Cart" : `In cart: ${item.quantity}`}
-          </Button>
+          </Button> 
         ) : (
           <Button variant="light" disabled>
             Out of stock

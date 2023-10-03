@@ -3,6 +3,7 @@ import "./App.scss";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
+import SignInPage from "./pages/SignInPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/product/:slug" element={<ProductPage />}></Route>
         <Route path="/cart" element={<CartPage />}></Route>
+        <Route path="/signin" element={<SignInPage />}></Route>
       </Routes>
     </div>
   );
