@@ -15,3 +15,11 @@ export interface IProduct {
 export interface IProducts {
   products: IProduct[];
 }
+
+export type TUser = {
+  name: String;
+  email: String;
+  password: String;
+  isAdmin: Boolean;
+  _id: String;
+};

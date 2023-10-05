@@ -33,5 +33,14 @@ body {
 }
 
 .small-container {
-  min-width: 600px;
+  max-width: 600px !important;
+}
+
+.dropdown-hr {
+  margin: 5px 0 !important;
+}
+
+.dropdown-link {
+  text-decoration: none;
+  color: #212529;
 }

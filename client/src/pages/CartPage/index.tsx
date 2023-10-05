@@ -24,7 +24,7 @@ const CartPage: React.FC = () => {
     dispatch(clear(item));
   };
   const checkoutHandler = () => {
-    navigate("/signin?redirect=/shipping");
+    navigate("/singin?redirect=/shipping");
   };
   return (
     <Layout>
