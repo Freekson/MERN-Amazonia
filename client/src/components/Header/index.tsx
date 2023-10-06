@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from "../../redux/store";
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { signOut } from "../../redux/user/slice";
+import { clear } from "../../redux/cart/slice";
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,13 +23,16 @@ const Header: React.FC = () => {
 
   const singoutHandler = () => {
     dispatch(signOut());
-    localStorage.removeItem("user");
+    dispatch(clear());
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("userShippingAddress");
+    localStorage.removeItem("paymentMethod");
   };
 
   return (
     <header>
       <Navbar bg="dark" variant="dark">
-        <Container>
+        <Container className="header-logo">
           <LinkContainer to="/">
             <Navbar.Brand>Amazonia</Navbar.Brand>
           </LinkContainer>

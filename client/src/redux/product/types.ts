@@ -12,5 +12,5 @@ export interface ProductState {
 }
 
 export type ProductParams = {
-  slug: String;
+  slug: string;
 };

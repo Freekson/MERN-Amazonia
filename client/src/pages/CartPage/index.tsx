@@ -6,7 +6,7 @@ import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import MessageBox from "../../components/MessageBox";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
-import { addItem, clear, minusItem } from "../../redux/cart/slice";
+import { addItem, deleteItem, minusItem } from "../../redux/cart/slice";
 import { IProduct } from "../../types";
 
 const CartPage: React.FC = () => {
@@ -20,8 +20,8 @@ const CartPage: React.FC = () => {
   const minusCart = (item: IProduct) => {
     dispatch(minusItem(item));
   };
-  const clearCart = (item: IProduct) => {
-    dispatch(clear(item));
+  const deleteCart = (item: IProduct) => {
+    dispatch(deleteItem(item));
   };
   const checkoutHandler = () => {
     navigate("/singin?redirect=/shipping");
@@ -70,7 +70,7 @@ const CartPage: React.FC = () => {
                     </Col>
                     <Col md={3}>${item.price}</Col>
                     <Col md={2}>
-                      <Button variant="light" onClick={() => clearCart(item)}>
+                      <Button variant="light" onClick={() => deleteCart(item)}>
                         <i className="fas fa-trash"></i>
                       </Button>
                     </Col>

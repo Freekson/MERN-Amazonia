@@ -17,9 +17,9 @@ export interface IProducts {
 }
 
 export type TUser = {
-  name: String;
-  email: String;
-  password: String;
-  isAdmin: Boolean;
-  _id: String;
+  name: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  _id: string;
 };
