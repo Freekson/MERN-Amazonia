@@ -8,6 +8,7 @@ import ShippingPage from "./pages/ShippingPage";
 import SingUpPage from "./pages/SignUpPage";
 import PaymentPage from "./pages/PaymentPage";
 import PlaceOrderPage from "./pages/PlaceOrderPage";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/shipping" element={<ShippingPage />}></Route>
         <Route path="/payment" element={<PaymentPage />}></Route>
         <Route path="/placeorder" element={<PlaceOrderPage />}></Route>
+        <Route path="/order/:id" element={<OrderPage />}></Route>
       </Routes>
     </div>
   );

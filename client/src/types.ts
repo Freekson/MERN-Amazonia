@@ -22,4 +22,27 @@ export type TUser = {
   password: string;
   isAdmin: boolean;
   _id: string;
+  token?: string;
 };
+
+export interface IOrder {
+  _id: string;
+  orderItems: IProduct[];
+  shippingAddress: {
+    fullName: string;
+    address: string;
+    city: string;
+    postCode: string;
+    country: string;
+  };
+  paymentMethod: string;
+  itemsPrice: number;
+  shippingPrice: number;
+  taxPrice: number;
+  totalPrice: number;
+  user: string;
+  isPaid: boolean;
+  paidAt: string;
+  isDelivered: boolean;
+  deliveredAt?: string;
+}

@@ -1,18 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import CheckoutSteps from "../../components/CheckoutSteps";
 import { Helmet } from "react-helmet-async";
 import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
+import axios from "axios";
+import { clear } from "../../redux/cart/slice";
+import LoadingBox from "../../components/LoadingBox";
+import MessageBox from "../../components/MessageBox";
+import { getError } from "../../utils/getError";
 
 const PlaceOrderPage = () => {
   const navigate = useNavigate();
-  const { userAddress, userPaymentMethod } = useSelector(
+  const dispatch = useAppDispatch();
+  const { userAddress, userPaymentMethod, user } = useSelector(
     (state: RootState) => state.user
   );
   const { cartItems } = useSelector((state: RootState) => state.cart);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!userPaymentMethod) {
@@ -27,7 +35,36 @@ const PlaceOrderPage = () => {
   const shippingPrice = itemsPrice > 100 ? round2(0) : round2(10);
   const taxPrice = round2(0.15 * itemsPrice);
   const totalPrice = itemsPrice + shippingPrice + taxPrice;
-  const placeOrderHandler = async () => {};
+  const placeOrderHandler = async () => {
+    try {
+      setError("");
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "/api/orders",
+        {
+          orderItems: cartItems,
+          shippingAddress: userAddress,
+          paymentMethod: userPaymentMethod,
+          itemsPrice: itemsPrice,
+          shippingPrice: shippingPrice,
+          taxPrice: taxPrice,
+          totalPrice: totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      setIsLoading(false);
+      dispatch(clear());
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`);
+    } catch (err) {
+      setIsLoading(false);
+      setError(getError(err));
+    }
+  };
   return (
     <Layout>
       <CheckoutSteps step4 />
@@ -91,13 +128,15 @@ const PlaceOrderPage = () => {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Items</Col>
+                    <Col>Items Price</Col>
                     <Col>${itemsPrice}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Shipping</Col>
+                    <Col>
+                      Shipping <br /> <small>Free shipping from 100$</small>
+                    </Col>
                     <Col>${shippingPrice}</Col>
                   </Row>
                 </ListGroup.Item>
@@ -122,9 +161,19 @@ const PlaceOrderPage = () => {
                     >
                       Place Order
                     </Button>
+                    {isLoading && <LoadingBox></LoadingBox>}
                   </div>
                 </ListGroup.Item>
               </ListGroup>
+              {error !== "" ? (
+                <ListGroup variant="flush">
+                  <ListGroup.Item>
+                    <MessageBox variant="danger">{error} 😕</MessageBox>
+                  </ListGroup.Item>
+                </ListGroup>
+              ) : (
+                ""
+              )}
             </Card.Body>
           </Card>
         </Col>
