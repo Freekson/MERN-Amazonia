@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import MessageBox from "../../components/MessageBox";
 import LoadingBox from "../../components/LoadingBox";
@@ -7,7 +7,15 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { Helmet } from "react-helmet-async";
 import { Card, Col, ListGroup, Row } from "react-bootstrap";
-import { fetchOrder } from "../../redux/order/slice";
+import { fetchOrder, setIsPaid } from "../../redux/order/slice";
+import axios from "axios";
+import {
+  PayPalButtons,
+  ReactPayPalScriptOptions,
+  SCRIPT_LOADING_STATE,
+  usePayPalScriptReducer,
+} from "@paypal/react-paypal-js";
+import { getError } from "../../utils/getError";
 
 const OrderPage = () => {
   const navigate = useNavigate();
@@ -16,6 +24,11 @@ const OrderPage = () => {
   const { id: orderId } = params;
   const { user } = useSelector((state: RootState) => state.user);
   const { orders, status } = useSelector((state: RootState) => state.orders);
+  const [error, setError] = useState("");
+  const [successPay, setSuccessPay] = useState(false);
+
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+
   const order = orders[0];
   const token = user?.token;
 
@@ -30,10 +43,75 @@ const OrderPage = () => {
     if (!user) {
       return navigate("/singin");
     }
-    if (!order?._id || (order?._id && order?._id !== orderId)) {
+    if (!order?._id || successPay || (order?._id && order?._id !== orderId)) {
       fetchData();
+      setSuccessPay(false);
+    } else {
+      const loadPaypalScript = async () => {
+        const { data: clientId } = await axios.get("/api/keys/paypal", {
+          headers: { authorization: `Bearer ${user.token}` },
+        });
+        const paypalOptions: ReactPayPalScriptOptions = {
+          currency: "USD",
+          clientId: clientId,
+        };
+        paypalDispatch({
+          type: "resetOptions",
+          value: paypalOptions,
+        });
+        paypalDispatch({
+          type: "setLoadingStatus",
+          value: "pending" as SCRIPT_LOADING_STATE,
+        });
+      };
+
+      loadPaypalScript();
     }
-  }, [dispatch, navigate, order?._id, orderId, token, user]);
+  }, [
+    dispatch,
+    navigate,
+    order?._id,
+    orderId,
+    paypalDispatch,
+    successPay,
+    token,
+    user,
+  ]);
+
+  const createOrder = (data: any, actions: any) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice },
+          },
+        ],
+      })
+      .then((orderId: string) => {
+        return orderId;
+      });
+  };
+
+  const onApprove = (data: any, actions: any) => {
+    return actions.order.capture().then(async function (details: any) {
+      try {
+        await axios.put(`/api/orders/${order._id}/pay`, details, {
+          headers: { authorization: `Bearer ${user?.token}` },
+        });
+        if (user) {
+          dispatch(setIsPaid(user._id));
+        }
+        setSuccessPay(true);
+      } catch (err) {
+        setError(getError(err));
+      }
+    });
+  };
+
+  const onError = (err: any) => {
+    setError(getError(err));
+  };
+
   return (
     <Layout>
       {status === "loading" ? (
@@ -94,7 +172,7 @@ const OrderPage = () => {
                             <img
                               src={item.image}
                               alt={item.name}
-                              className="img-fluid rounded img-thumbnail"
+                              className="img-fluid rounded img-thumbnail placeorder-img "
                             />
                             <Link to={`/product/${item.slug}`}>
                               {item.name}
@@ -142,6 +220,32 @@ const OrderPage = () => {
                         <Col>${order.totalPrice.toFixed(2)}</Col>
                       </Row>
                     </ListGroup.Item>
+                    {!order.isPaid && order.paymentMethod === "PayPal" ? (
+                      <ListGroup.Item>
+                        {isPending ? (
+                          <LoadingBox />
+                        ) : (
+                          <div>
+                            <PayPalButtons
+                              createOrder={createOrder}
+                              onApprove={onApprove}
+                              onError={onError}
+                            />
+                            {error !== "" ? (
+                              <MessageBox variant="danger">{error}</MessageBox>
+                            ) : successPay ? (
+                              <MessageBox variant="success ">
+                                Order is paid
+                              </MessageBox>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        )}
+                      </ListGroup.Item>
+                    ) : (
+                      ""
+                    )}
                   </ListGroup>
                 </Card.Body>
               </Card>

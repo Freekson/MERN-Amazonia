@@ -42,7 +42,13 @@ export interface IOrder {
   totalPrice: number;
   user: string;
   isPaid: boolean;
-  paidAt: string;
+  paidAt?: string;
   isDelivered: boolean;
   deliveredAt?: string;
+  paymentResult?: {
+    id: string;
+    status: string;
+    update_time: string;
+    email_address: string;
+  };
 }

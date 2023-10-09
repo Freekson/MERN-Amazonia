@@ -50,6 +50,7 @@ const PaymentPage = () => {
           </div>
           <div className="mb-3">
             <Form.Check
+              disabled
               type="radio"
               id="Stripe"
               label="Stripe"

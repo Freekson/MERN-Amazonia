@@ -25,6 +25,14 @@ const orderSlice = createSlice({
     setItems(state, action: PayloadAction<IOrder[]>) {
       state.orders = action.payload;
     },
+    setIsPaid(state, action: PayloadAction<string>) {
+      const foundOrder = state.orders.find(
+        (item) => item._id === action.payload
+      );
+      if (foundOrder) {
+        foundOrder.isPaid = true;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchOrder.pending, (state) => {
@@ -41,5 +49,5 @@ const orderSlice = createSlice({
     });
   },
 });
-export const { setItems } = orderSlice.actions;
+export const { setItems, setIsPaid } = orderSlice.actions;
 export default orderSlice.reducer;
