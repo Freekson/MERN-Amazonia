@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import seedRouter from "./routes/seedRoutes.js";
@@ -24,10 +25,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
-app.use("https://mern-amazonia.vercel.app/api/seed", seedRouter);
+app.use("/api/seed", seedRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+
+const __dirname = path.resolve();
+app.use(express.static(__dirname));
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
