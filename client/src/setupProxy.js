@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "https://mern-amazonia.vercel.app",
+      target: "http://localhost:5000",
       changeOrigin: true,
     })
   );
