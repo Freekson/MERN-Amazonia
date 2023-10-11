@@ -12,7 +12,7 @@ import LoadingBox from "../../components/LoadingBox";
 import MessageBox from "../../components/MessageBox";
 import { getError } from "../../utils/getError";
 
-const PlaceOrderPage = () => {
+const PlaceOrderPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { userAddress, userPaymentMethod, user } = useSelector(

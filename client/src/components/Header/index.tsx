@@ -27,48 +27,52 @@ const Header: React.FC = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("userShippingAddress");
     localStorage.removeItem("paymentMethod");
+    window.location.href = "/singin";
   };
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="dark" variant="dark" expand="lg">
         <Container className="header-logo">
           <LinkContainer to="/">
             <Navbar.Brand>Amazonia</Navbar.Brand>
           </LinkContainer>
-          <Nav className="me-auto">
-            <Link to="/cart" className="nav-link">
-              Cart{" "}
-              {cartItems.length > 0 && (
-                <Badge pill bg="danger">
-                  {cartItems.reduce((a, c) => a + c.quantity, 0)}
-                </Badge>
-              )}
-            </Link>
-            {user ? (
-              <NavDropdown title={user.name} id="basic-nav-dropdown">
-                <LinkContainer to="/profile">
-                  <NavDropdown.Item>User Profile</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to="/orderhistory">
-                  <NavDropdown.Item>Order History</NavDropdown.Item>
-                </LinkContainer>
-                <hr className="dropdown-hr" />
-
-                <Link
-                  className="dropdown-item"
-                  to="#signout"
-                  onClick={singoutHandler}
-                >
-                  Sing Out
-                </Link>
-              </NavDropdown>
-            ) : (
-              <Link className="nav-link" to="/singin">
-                Sing in
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto w-100 justify-content-end">
+              <Link to="/cart" className="nav-link">
+                Cart{" "}
+                {cartItems.length > 0 && (
+                  <Badge pill bg="danger">
+                    {cartItems.reduce((a, c) => a + c.quantity, 0)}
+                  </Badge>
+                )}
               </Link>
-            )}
-          </Nav>
+              {user ? (
+                <NavDropdown title={user.name} id="basic-nav-dropdown">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>User Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/orderhistory">
+                    <NavDropdown.Item>Order History</NavDropdown.Item>
+                  </LinkContainer>
+                  <hr className="dropdown-hr" />
+
+                  <Link
+                    className="dropdown-item"
+                    to="#signout"
+                    onClick={singoutHandler}
+                  >
+                    Sing Out
+                  </Link>
+                </NavDropdown>
+              ) : (
+                <Link className="nav-link" to="/singin">
+                  Sing in
+                </Link>
+              )}
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </header>

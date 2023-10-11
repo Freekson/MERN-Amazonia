@@ -13,3 +13,9 @@ export type TUserAddress = {
   postCode: string;
   country: string;
 };
+
+export type setUserProps = {
+  name: string;
+  email: string;
+  password: string;
+};

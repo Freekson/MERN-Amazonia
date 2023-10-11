@@ -17,7 +17,7 @@ import {
 } from "@paypal/react-paypal-js";
 import { getError } from "../../utils/getError";
 
-const OrderPage = () => {
+const OrderPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const params = useParams();

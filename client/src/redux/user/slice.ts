@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { TUserAddress, UserState } from "./types";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { TUserAddress, UserState, setUserProps } from "./types";
 import { TUser } from "../../types";
 
 const data = localStorage.getItem("userInfo");
@@ -36,8 +36,20 @@ const userSlice = createSlice({
     savePaymentMethod(state, action) {
       state.userPaymentMethod = action.payload;
     },
+    setUser(state, action: PayloadAction<setUserProps>) {
+      if (state.user) {
+        state.user.name = action.payload.name;
+        state.user.email = action.payload.email;
+        state.user.password = action.payload.password;
+      }
+    },
   },
 });
-export const { singIn, signOut, saveShippingAddress, savePaymentMethod } =
-  userSlice.actions;
+export const {
+  singIn,
+  signOut,
+  saveShippingAddress,
+  savePaymentMethod,
+  setUser,
+} = userSlice.actions;
 export default userSlice.reducer;

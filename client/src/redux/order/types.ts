@@ -11,6 +11,10 @@ export type OrderParams = {
   token?: string;
 };
 
+export type OrdersParams = {
+  token?: string;
+};
+
 export interface OrderState {
   orders: IOrder[];
   status: Status;

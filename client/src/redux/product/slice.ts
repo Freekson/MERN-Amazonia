@@ -9,7 +9,7 @@ const initialState: ProductState = {
 };
 
 export const fetchProducts = createAsyncThunk(
-  "pizza/fetchAllProductsStatus",
+  "products/fetchAllProductsStatus",
   async () => {
     const { data } = await axios.get<IProduct[]>("/api/products");
 
@@ -17,7 +17,7 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 export const fetchProduct = createAsyncThunk<IProduct, ProductParams>(
-  "pizza/fetchProductStatus",
+  "product/fetchProductStatus",
   async ({ slug }) => {
     const { data } = await axios.get<IProduct>(`/api/products/slug/${slug}`);
     return data;

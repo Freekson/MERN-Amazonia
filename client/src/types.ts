@@ -51,4 +51,5 @@ export interface IOrder {
     update_time: string;
     email_address: string;
   };
+  createdAt?: string;
 }
