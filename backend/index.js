@@ -6,7 +6,6 @@ import seedRouter from "./routes/seedRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
-import cors from "cors";
 
 //fetch variables from .env file
 dotenv.config();
@@ -20,16 +19,11 @@ mongoose
 
 const app = express();
 
-app.use(cors({ origin: "https://mern-amazonia-api.vercel.app/" }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://mern-amazonia-api.vercel.app/"
-  );
+  res.header("Access-Control-Allow-Origin", "https://mern-amazonia.vercel.app");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
