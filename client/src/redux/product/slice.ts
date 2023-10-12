@@ -11,7 +11,9 @@ const initialState: ProductState = {
 export const fetchProducts = createAsyncThunk(
   "products/fetchAllProductsStatus",
   async () => {
-    const { data } = await axios.get<IProduct[]>("/api/products");
+    const { data } = await axios.get<IProduct[]>(
+      "https://mern-amazonia-api.vercel.app/api/products/api/products"
+    );
 
     return data;
   }
