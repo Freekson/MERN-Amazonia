@@ -1,5 +1,12 @@
 {
   "version": 2,
   "builds": [{ "src": "*.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/" }]
+  "routes": [{ "src": "/(.*)", "dest": "/" }],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "mern-amazonia-api.vercel.app/api/$1"
+    },
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
 }
