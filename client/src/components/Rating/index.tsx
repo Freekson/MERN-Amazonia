@@ -3,8 +3,9 @@ import React from "react";
 interface IRatingProps {
   rating?: number;
   numReviews?: number;
+  caption?: string;
 }
-const Rating: React.FC<IRatingProps> = ({ rating, numReviews }) => {
+const Rating: React.FC<IRatingProps> = ({ rating, numReviews, caption }) => {
   const stars = [];
 
   for (let i = 0; i < 5; i++) {
@@ -25,7 +26,11 @@ const Rating: React.FC<IRatingProps> = ({ rating, numReviews }) => {
   return (
     <div className="rating">
       {stars}
-      <span>{numReviews} rewies</span>
+      {caption ? (
+        <span>{caption}</span>
+      ) : (
+        <span>{" " + numReviews + "reviews"}</span>
+      )}
     </div>
   );
 };

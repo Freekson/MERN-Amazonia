@@ -22,7 +22,8 @@ body {
   color: #ffc000;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-outline-primary {
   background-color: #ffc000 !important;
   color: black !important;
 }
@@ -68,4 +69,20 @@ body {
 
 .placeorder-img {
   margin-right: 20px !important;
+}
+
+.active_nav {
+  left: 0 !important;
+}
+
+.side_navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #100901;
+  transition: 0.5s;
+}
+.navbar-brand {
+  font-weight: bold;
 }

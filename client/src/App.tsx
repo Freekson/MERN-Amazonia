@@ -11,6 +11,7 @@ import PlaceOrderPage from "./pages/PlaceOrderPage";
 import OrderPage from "./pages/OrderPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import ProfilePage from "./pages/ProfilePage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/order/:id" element={<OrderPage />}></Route>
         <Route path="/orderhistory" element={<OrderHistoryPage />}></Route>
         <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/search" element={<SearchPage />}></Route>
       </Routes>
     </div>
   );

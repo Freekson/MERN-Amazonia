@@ -1,4 +1,11 @@
-import { Badge, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import {
+  Badge,
+  Button,
+  Container,
+  Nav,
+  NavDropdown,
+  Navbar,
+} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { RootState, useAppDispatch } from "../../redux/store";
@@ -6,8 +13,14 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { signOut } from "../../redux/user/slice";
 import { clear } from "../../redux/cart/slice";
+import SearchBox from "../SearchBox";
 
-const Header: React.FC = () => {
+type TProps = {
+  sidebarIsOpen: boolean;
+  setSidebarIsOpen: (isOpen: boolean) => void;
+};
+
+const Header: React.FC<TProps> = ({ sidebarIsOpen, setSidebarIsOpen }) => {
   const dispatch = useAppDispatch();
   const isMounted = useRef(false);
 
@@ -34,11 +47,18 @@ const Header: React.FC = () => {
     <header>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container className="header-logo">
+          <Button
+            variant="dark"
+            onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
+          >
+            <i className="fas fa-bars"></i>
+          </Button>
           <LinkContainer to="/">
             <Navbar.Brand>Amazonia</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <SearchBox />
             <Nav className="me-auto w-100 justify-content-end">
               <Link to="/cart" className="nav-link">
                 Cart{" "}

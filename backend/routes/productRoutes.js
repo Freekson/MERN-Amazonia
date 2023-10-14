@@ -1,5 +1,6 @@
 import express from "express";
 import Product from "../models/productModel.js";
+import expressAsyncHandler from "express-async-handler";
 
 const productRouter = express.Router();
 
@@ -7,6 +8,18 @@ productRouter.get("/", async (req, res) => {
   const products = await Product.find();
   res.send(products);
 });
+
+productRouter.get(
+  "/categories",
+  expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct("category");
+    if (categories) {
+      res.send(categories);
+    } else {
+      res.status(404).send({ message: " Categories not found" });
+    }
+  })
+);
 
 productRouter.get("/slug/:slug", async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
