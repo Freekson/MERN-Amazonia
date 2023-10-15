@@ -11,6 +11,7 @@ export interface ProductState {
   status: Status;
   countProducts?: number;
   pages?: number;
+  page?: number;
 }
 
 export type ProductParams = {
@@ -25,3 +26,10 @@ export type DataParams = {
   rating: string;
   order: string;
 };
+
+export interface ProductResponse {
+  products: IProduct[];
+  countProducts: number;
+  page: number;
+  pages: number;
+}

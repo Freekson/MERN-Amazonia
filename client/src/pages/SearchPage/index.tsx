@@ -33,31 +33,30 @@ const prices = [
     value: "51-200",
   },
   {
-    name: "$201 to $500",
-    value: "201-500",
+    name: "$201 to $1000",
+    value: "201-1000",
   },
 ];
 
 const ratings = [
   {
-    name: "5 stars",
-    value: "5",
+    name: " & up",
+    rating: 4,
   },
+
   {
-    name: "4 stars",
-    value: "4",
+    name: " & up",
+    rating: 3,
   },
+
   {
-    name: "3 stars",
-    value: "3",
+    name: " & up",
+    rating: 2,
   },
+
   {
-    name: "2 stars",
-    value: "2",
-  },
-  {
-    name: "1 stars",
-    value: "1",
+    name: " & up",
+    rating: 1,
   },
 ];
 
@@ -73,7 +72,8 @@ const SearchPage: React.FC = () => {
   const order = sp.get("order") || "newest";
   const page = sp.get("page") || "1";
   const [error, setError] = useState("");
-  const { products, status, countProducts, pages } = useSelector(
+  const products = useSelector((state: RootState) => state.products.products);
+  const { status, countProducts, pages } = useSelector(
     (state: RootState) => state.products
   );
   const { categories } = useSelector((state: RootState) => state.category);
@@ -86,6 +86,7 @@ const SearchPage: React.FC = () => {
       setError(getError(err));
     }
   }, [category, dispatch, order, page, price, query, rating]);
+
   useEffect(() => {
     try {
       dispatch(fetchCategories());
@@ -120,23 +121,23 @@ const SearchPage: React.FC = () => {
                 <Link
                   className={"all" === category ? "text-bold" : ""}
                   to={{
-                    pathname: "api/products/search",
+                    pathname: "/search",
                     search: getFilterUrl({ category: "all" }),
                   }}
                 >
                   Any
                 </Link>
               </li>
-              {categories.map((item) => (
-                <li key={item.category}>
+              {categories.map((item, index) => (
+                <li key={index}>
                   <Link
-                    className={item.category === category ? "text-bold" : ""}
+                    className={String(item) === category ? "text-bold" : ""}
                     to={{
-                      pathname: "api/products/search",
-                      search: getFilterUrl({ category: item.category }),
+                      pathname: "/search",
+                      search: getFilterUrl({ category: String(item) }),
                     }}
                   >
-                    {item.category}
+                    {String(item)}
                   </Link>
                 </li>
               ))}
@@ -149,19 +150,19 @@ const SearchPage: React.FC = () => {
                 <Link
                   className={"all" === price ? "text-bold" : ""}
                   to={{
-                    pathname: "api/products/search",
+                    pathname: "/search",
                     search: getFilterUrl({ price: "all" }),
                   }}
                 >
                   Any
                 </Link>
               </li>
-              {prices.map((p) => (
-                <li key={p.value}>
+              {prices.map((p, index) => (
+                <li key={index}>
                   <Link
                     className={p.value === price ? "text-bold" : ""}
                     to={{
-                      pathname: "api/products/search",
+                      pathname: "/search",
                       search: getFilterUrl({ price: p.value }),
                     }}
                   >
@@ -172,29 +173,29 @@ const SearchPage: React.FC = () => {
             </ul>
           </div>
           <div>
-            <h3>Avg. Customer Review</h3>
+            <h3>Customer Review</h3>
             <ul>
               <li>
                 <Link
                   className={"all" === rating ? "text-bold" : ""}
                   to={{
-                    pathname: "api/products/search",
+                    pathname: "/search",
                     search: getFilterUrl({ rating: "all" }),
                   }}
                 >
                   Any
                 </Link>
               </li>
-              {ratings.map((r) => (
-                <li key={r.value}>
+              {ratings.map((r, index) => (
+                <li key={index}>
                   <Link
-                    className={r.value === rating ? "text-bold" : ""}
+                    className={r.rating === Number(rating) ? "text-bold" : ""}
                     to={{
-                      pathname: "api/products/search",
-                      search: getFilterUrl({ price: r.value }),
+                      pathname: "/search",
+                      search: getFilterUrl({ rating: String(r.rating) }),
                     }}
                   >
-                    <Rating caption={r.name} rating={Number(r.value)} />
+                    <Rating caption={r.name} rating={r.rating} />
                   </Link>
                 </li>
               ))}
@@ -235,8 +236,7 @@ const SearchPage: React.FC = () => {
                     value={order}
                     onChange={(e) => {
                       navigate(
-                        "/api/products/search" +
-                          getFilterUrl({ order: e.target.value })
+                        "/search" + getFilterUrl({ order: e.target.value })
                       );
                     }}
                   >
@@ -252,11 +252,12 @@ const SearchPage: React.FC = () => {
               )}
 
               <Row>
-                {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
+                {products &&
+                  products.map((product, index) => (
+                    <Col sm={6} lg={4} className="mb-3" key={product.slug}>
+                      <Product product={product}></Product>
+                    </Col>
+                  ))}
               </Row>
               <div>
                 {pages
@@ -265,7 +266,7 @@ const SearchPage: React.FC = () => {
                         key={index + 1}
                         className="mx-1"
                         to={{
-                          pathname: "api/products/search",
+                          pathname: "/search",
                           search: getFilterUrl({ page: String(index + 1) }),
                         }}
                       >

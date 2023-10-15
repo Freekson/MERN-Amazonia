@@ -15,8 +15,8 @@ export const fetchCategories = createAsyncThunk<ICategory[]>(
   }
 );
 
-const productSlice = createSlice({
-  name: "product",
+const categorySlice = createSlice({
+  name: "category",
   initialState,
   reducers: {
     setItems(state, action: PayloadAction<ICategory[]>) {
@@ -38,5 +38,5 @@ const productSlice = createSlice({
     });
   },
 });
-export const { setItems } = productSlice.actions;
-export default productSlice.reducer;
+export const { setItems } = categorySlice.actions;
+export default categorySlice.reducer;

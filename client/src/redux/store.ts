@@ -4,6 +4,7 @@ import productReducer from "./product/slice";
 import userReducer from "./user/slice";
 import orderReducer from "./order/slice";
 import categoryReducer from "./category/slice";
+import dashboardReducer from "./dashboard/slice";
 
 import { useDispatch } from "react-redux";
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     user: userReducer,
     orders: orderReducer,
     category: categoryReducer,
+    dashboard: dashboardReducer,
   },
 });
 

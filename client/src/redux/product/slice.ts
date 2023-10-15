@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DataParams, ProductParams, ProductState, Status } from "./types";
+import {
+  DataParams,
+  ProductParams,
+  ProductResponse,
+  ProductState,
+  Status,
+} from "./types";
 import { IProduct } from "../../types";
 import axios from "axios";
 
@@ -7,7 +13,8 @@ const initialState: ProductState = {
   products: [],
   status: Status.LOADING,
   countProducts: 0,
-  pages: 1,
+  pages: 3,
+  page: 1,
 };
 
 export const fetchProducts = createAsyncThunk(
@@ -25,7 +32,7 @@ export const fetchProduct = createAsyncThunk<IProduct, ProductParams>(
     return data;
   }
 );
-export const fetchData = createAsyncThunk<IProduct[], DataParams>(
+export const fetchData = createAsyncThunk<ProductResponse, DataParams>(
   "products/fetchDataStatus",
   async ({ page, query, category, price, rating, order }) => {
     const { data } = await axios.get(
@@ -76,10 +83,11 @@ const productSlice = createSlice({
       state.countProducts = 0;
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.products = action.payload;
+      state.products = action.payload.products;
       state.status = Status.SUCCESS;
-      state.countProducts = action.payload.length;
-      state.pages = 2;
+      state.countProducts = action.payload.products.length;
+      state.pages = action.payload.pages;
+      state.page = action.payload.page;
     });
     builder.addCase(fetchData.rejected, (state) => {
       state.products = [];

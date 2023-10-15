@@ -17,8 +17,6 @@ const Layout: React.FC<TProps> = ({ children }) => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.category);
-  categories.map((item) => console.log(item));
-
   useEffect(() => {
     try {
       dispatch(fetchCategories());
