@@ -96,13 +96,13 @@ const Header: React.FC<TProps> = ({ sidebarIsOpen, setSidebarIsOpen }) => {
                   <LinkContainer to="/admin/dashboard">
                     <NavDropdown.Item>Dashboard</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/productlist">
+                  <LinkContainer to="/admin/products">
                     <NavDropdown.Item>Products</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
+                  <LinkContainer to="/admin/orders">
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/userlist">
+                  <LinkContainer to="/admin/users">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>

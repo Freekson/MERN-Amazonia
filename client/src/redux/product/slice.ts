@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  AdminProductsParams,
   DataParams,
   ProductParams,
   ProductResponse,
@@ -21,7 +22,6 @@ export const fetchProducts = createAsyncThunk(
   "products/fetchAllProductsStatus",
   async () => {
     const { data } = await axios.get<IProduct[]>("/api/products");
-
     return data;
   }
 );
@@ -41,6 +41,15 @@ export const fetchData = createAsyncThunk<ProductResponse, DataParams>(
     return data;
   }
 );
+export const fetchAdminProducts = createAsyncThunk<
+  ProductResponse,
+  AdminProductsParams
+>("adminProducts/fetchAdminProductsStatus", async ({ token, page }) => {
+  const { data } = await axios.get(`/api/products/admin?page=${page}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data;
+});
 
 const productSlice = createSlice({
   name: "product",
@@ -51,6 +60,7 @@ const productSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    //? fetchAllProducts
     builder.addCase(fetchProducts.pending, (state) => {
       state.products = [];
       state.status = Status.LOADING;
@@ -64,6 +74,7 @@ const productSlice = createSlice({
       state.status = Status.ERROR;
     });
 
+    //? fetchProduct
     builder.addCase(fetchProduct.pending, (state) => {
       state.products = [];
       state.status = Status.LOADING;
@@ -77,6 +88,7 @@ const productSlice = createSlice({
       state.status = Status.ERROR;
     });
 
+    //? fetchFilteredProducts
     builder.addCase(fetchData.pending, (state) => {
       state.products = [];
       state.status = Status.LOADING;
@@ -85,7 +97,7 @@ const productSlice = createSlice({
     builder.addCase(fetchData.fulfilled, (state, action) => {
       state.products = action.payload.products;
       state.status = Status.SUCCESS;
-      state.countProducts = action.payload.products.length;
+      state.countProducts = action.payload.countProducts;
       state.pages = action.payload.pages;
       state.page = action.payload.page;
     });
@@ -94,6 +106,25 @@ const productSlice = createSlice({
       state.status = Status.ERROR;
       state.countProducts = 0;
     });
+
+    //? fetchProductsForAdminPage
+    builder.addCase(fetchAdminProducts.pending, (state) => {
+      state.products = [];
+      state.status = Status.LOADING;
+    });
+    builder.addCase(fetchAdminProducts.fulfilled, (state, action) => {
+      state.products = action.payload.products;
+      state.status = Status.SUCCESS;
+      state.countProducts = action.payload.countProducts;
+      state.pages = action.payload.pages;
+      state.page = action.payload.page;
+    });
+    builder.addCase(fetchAdminProducts.rejected, (state) => {
+      state.products = [];
+      state.status = Status.ERROR;
+    });
+
+    //? createProduct
   },
 });
 export const { setItems } = productSlice.actions;

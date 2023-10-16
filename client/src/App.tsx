@@ -15,6 +15,8 @@ import SearchPage from "./pages/SearchPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import AdminRoute from "./components/AdminRoute";
+import ProductListPage from "./pages/ProductListPage";
+import ProductEditPage from "./pages/ProductEditPage";
 
 function App() {
   return (
@@ -59,6 +61,22 @@ function App() {
           element={
             <AdminRoute>
               <DashboardPage />
+            </AdminRoute>
+          }
+        ></Route>
+        <Route
+          path="/admin/products"
+          element={
+            <AdminRoute>
+              <ProductListPage />
+            </AdminRoute>
+          }
+        ></Route>
+        <Route
+          path="/admin/product/:id"
+          element={
+            <AdminRoute>
+              <ProductEditPage />
             </AdminRoute>
           }
         ></Route>

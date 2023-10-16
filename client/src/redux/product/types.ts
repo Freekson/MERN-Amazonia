@@ -33,3 +33,8 @@ export interface ProductResponse {
   page: number;
   pages: number;
 }
+
+export type AdminProductsParams = {
+  page: number;
+  token: string;
+};

@@ -16,6 +16,8 @@ export interface DashboardState {
 export interface IDashboard {
   orders: OrderType[];
   users: UserType[];
+  productCategories: ProductCategoryType[];
+  dailyOrders: DailyOrdersType[];
 }
 
 type OrderType = {
@@ -27,4 +29,15 @@ type OrderType = {
 type UserType = {
   _id: null;
   numUsers: number;
+};
+
+type ProductCategoryType = {
+  _id: string;
+  count: number;
+};
+
+type DailyOrdersType = {
+  _id: string;
+  orders: number;
+  sales: number;
 };

@@ -6,6 +6,8 @@ const initialState: DashboardState = {
   summary: {
     orders: [],
     users: [],
+    productCategories: [],
+    dailyOrders: [],
   },
   status: Status.LOADING,
 };
