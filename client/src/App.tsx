@@ -17,6 +17,7 @@ import DashboardPage from "./pages/DashboardPage";
 import AdminRoute from "./components/AdminRoute";
 import ProductListPage from "./pages/ProductListPage";
 import ProductEditPage from "./pages/ProductEditPage";
+import OrderListPage from "./pages/OrderListPage";
 
 function App() {
   return (
@@ -77,6 +78,14 @@ function App() {
           element={
             <AdminRoute>
               <ProductEditPage />
+            </AdminRoute>
+          }
+        ></Route>
+        <Route
+          path="/admin/orders"
+          element={
+            <AdminRoute>
+              <OrderListPage />
             </AdminRoute>
           }
         ></Route>

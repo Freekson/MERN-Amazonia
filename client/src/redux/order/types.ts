@@ -1,4 +1,4 @@
-import { IOrder } from "../../types";
+import { IProduct } from "../../types";
 
 export enum Status {
   LOADING = "loading",
@@ -16,6 +16,38 @@ export type OrdersParams = {
 };
 
 export interface OrderState {
-  orders: IOrder[];
+  orders: UpdatedOrder[];
   status: Status;
 }
+
+export type UpdatedOrder = {
+  _id: string;
+  orderItems: IProduct[];
+  shippingAddress: {
+    fullName: string;
+    address: string;
+    city: string;
+    postCode: string;
+    country: string;
+  };
+  paymentMethod: string;
+  itemsPrice: number;
+  shippingPrice: number;
+  taxPrice: number;
+  totalPrice: number;
+  user?: {
+    _id: string;
+    name: string;
+  };
+  isPaid: boolean;
+  paidAt?: string;
+  isDelivered: boolean;
+  deliveredAt?: string;
+  paymentResult?: {
+    id: string;
+    status: string;
+    update_time: string;
+    email_address: string;
+  };
+  createdAt: string;
+};

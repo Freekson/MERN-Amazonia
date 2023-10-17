@@ -6,8 +6,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { Helmet } from "react-helmet-async";
-import { Card, Col, ListGroup, Row } from "react-bootstrap";
-import { fetchOrder, setIsPaid } from "../../redux/order/slice";
+import { Button, Card, Col, ListGroup, Row } from "react-bootstrap";
+import { deliverOrder, fetchOrder, setIsPaid } from "../../redux/order/slice";
 import axios from "axios";
 import {
   PayPalButtons,
@@ -26,6 +26,7 @@ const OrderPage: React.FC = () => {
   const { orders, status } = useSelector((state: RootState) => state.orders);
   const [error, setError] = useState("");
   const [successPay, setSuccessPay] = useState(false);
+  const [isDeliverLoading, setIsDeliverLoading] = useState(false);
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -43,7 +44,12 @@ const OrderPage: React.FC = () => {
     if (!user) {
       return navigate("/singin");
     }
-    if (!order?._id || successPay || (order?._id && order?._id !== orderId)) {
+    if (
+      !order?._id ||
+      successPay ||
+      isDeliverLoading ||
+      (order?._id && order?._id !== orderId)
+    ) {
       fetchData();
       setSuccessPay(false);
     } else {
@@ -69,8 +75,9 @@ const OrderPage: React.FC = () => {
     }
   }, [
     dispatch,
+    isDeliverLoading,
     navigate,
-    order?._id,
+    order,
     orderId,
     paypalDispatch,
     successPay,
@@ -112,6 +119,18 @@ const OrderPage: React.FC = () => {
     setError(getError(err));
   };
 
+  const deliverOrderHandler = async () => {
+    try {
+      setIsDeliverLoading(true);
+      if (user) {
+        dispatch(deliverOrder({ orderId: order._id, token: user?.token }));
+      }
+      setIsDeliverLoading(false);
+    } catch (err) {
+      setError(getError(err));
+      setIsDeliverLoading(false);
+    }
+  };
   return (
     <Layout>
       {status === "loading" ? (
@@ -245,6 +264,19 @@ const OrderPage: React.FC = () => {
                       </ListGroup.Item>
                     ) : (
                       ""
+                    )}
+                    {user?.isAdmin && order.isPaid && !order.isDelivered && (
+                      <ListGroup.Item>
+                        <div className="d-grid">
+                          {isDeliverLoading ? (
+                            <LoadingBox />
+                          ) : (
+                            <Button type="button" onClick={deliverOrderHandler}>
+                              Deliver Order
+                            </Button>
+                          )}
+                        </div>
+                      </ListGroup.Item>
                     )}
                   </ListGroup>
                 </Card.Body>
