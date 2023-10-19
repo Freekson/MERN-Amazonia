@@ -21,19 +21,16 @@ const OrderListPage: React.FC = () => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch(fetchAdminOrders({ token: user?.token }));
-      } catch (err) {
-        setError(getError(err));
-      }
-      if (isDeleted) {
-        setIsDeleted(false);
-      } else {
-        dispatch(fetchAdminOrders({ token: user?.token }));
-      }
-    };
-    fetchData();
+    try {
+      dispatch(fetchAdminOrders({ token: user?.token }));
+    } catch (err) {
+      setError(getError(err));
+    }
+    if (isDeleted) {
+      setIsDeleted(false);
+    } else {
+      dispatch(fetchAdminOrders({ token: user?.token }));
+    }
   }, [dispatch, isDeleted, user]);
 
   const deleteHandler = async (order: UpdatedOrder) => {
