@@ -11,9 +11,10 @@ import { useSelector } from "react-redux";
 
 type TProps = {
   children: React.ReactNode;
+  isFullScreen?: boolean;
 };
 
-const Layout: React.FC<TProps> = ({ children }) => {
+const Layout: React.FC<TProps> = ({ children, isFullScreen = false }) => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const dispatch = useAppDispatch();
   const { categories } = useSelector((state: RootState) => state.category);
@@ -27,7 +28,13 @@ const Layout: React.FC<TProps> = ({ children }) => {
   return (
     <div
       className={
-        sidebarIsOpen ? styles.active_container : styles.site_container
+        sidebarIsOpen
+          ? isFullScreen
+            ? "active_container full-box"
+            : "active_container"
+          : isFullScreen
+          ? "site_container full-box"
+          : "site_container"
       }
     >
       <Header

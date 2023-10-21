@@ -27,14 +27,29 @@ const ShippingPage: React.FC = () => {
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
     dispatch(
-      saveShippingAddress({ fullName, address, city, postCode, country })
+      saveShippingAddress({
+        fullName,
+        address,
+        city,
+        postCode,
+        country,
+        location: userAddress?.location,
+      })
     );
     localStorage.setItem(
       "userShippingAddress",
-      JSON.stringify({ fullName, address, city, postCode, country })
+      JSON.stringify({
+        fullName,
+        address,
+        city,
+        postCode,
+        country,
+        location: userAddress?.location,
+      })
     );
     navigate("/payment");
   };
+
   return (
     <Layout>
       <Helmet>
@@ -94,6 +109,24 @@ const ShippingPage: React.FC = () => {
               required
             />
           </Form.Group>
+          <div className="mb-3">
+            <Button
+              id="chooseOnMap"
+              type="button"
+              variant="light"
+              onClick={() => navigate("/map")}
+            >
+              Choose Location On Map
+            </Button>
+          </div>
+          {userAddress?.location.lat ? (
+            <div>
+              LAT: {userAddress.location.lat}
+              LNG: {userAddress.location.lng}
+            </div>
+          ) : (
+            <div>No location</div>
+          )}
           <div className="mb-3">
             <Button
               type="button"

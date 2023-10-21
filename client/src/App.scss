@@ -99,3 +99,47 @@ body {
 .bottom-element {
   margin-top: auto;
 }
+
+// Map
+
+.full-box {
+  height: 100% !important;
+  max-width: initial !important;
+
+  header,
+  footer {
+    display: none !important;
+  }
+
+  .container {
+    height: 100vh !important;
+    max-width: initial !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mt-3 {
+    margin-top: 0 !important;
+  }
+
+  .map-input-box {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0.5rem auto;
+    width: 25rem;
+    height: 3rem;
+    display: flex;
+
+    input {
+      border-radius: 1rem 0 0 1rem;
+      border-right: 0;
+    }
+
+    button {
+      border-radius: 0 1rem 1rem 0;
+      border-right: 0;
+    }
+  }
+}

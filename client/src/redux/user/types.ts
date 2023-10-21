@@ -12,6 +12,14 @@ export type TUserAddress = {
   city: string;
   postCode: string;
   country: string;
+  location: {
+    lat: number;
+    lng: number;
+    address: string;
+    name: string;
+    vicinity: string;
+    googleAdressId: string;
+  };
 };
 
 export type setUserProps = {

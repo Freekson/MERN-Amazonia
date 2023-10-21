@@ -20,6 +20,7 @@ import ProductEditPage from "./pages/ProductEditPage";
 import OrderListPage from "./pages/OrderListPage";
 import UserListPage from "./pages/UserListPage";
 import UserEditPage from "./pages/UserEditPage";
+import MapPage from "./pages/MapPage";
 
 function App() {
   return (
@@ -34,6 +35,9 @@ function App() {
         <Route path="/payment" element={<PaymentPage />}></Route>
         <Route path="/placeorder" element={<PlaceOrderPage />}></Route>
         <Route path="/search" element={<SearchPage />}></Route>
+
+        {/* //! User routs */}
+
         <Route
           path="/order/:id"
           element={
@@ -58,7 +62,17 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        {/* Admin routs */}
+        <Route
+          path="/map"
+          element={
+            <ProtectedRoute>
+              <MapPage />
+            </ProtectedRoute>
+          }
+        ></Route>
+
+        {/* //! Admin routs */}
+
         <Route
           path="/admin/dashboard"
           element={
