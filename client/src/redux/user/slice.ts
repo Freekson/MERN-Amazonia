@@ -1,5 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TUserAddress, UserState, setUserProps } from "./types";
+import {
+  TUserAddress,
+  UserState,
+  setUserProps,
+  setMapLocationProps,
+} from "./types";
 import { TUser } from "../../types";
 
 const data = localStorage.getItem("userInfo");
@@ -33,6 +38,11 @@ const userSlice = createSlice({
     saveShippingAddress(state, action) {
       state.userAddress = action.payload;
     },
+    saveSippingMapLocation(state, action: PayloadAction<setMapLocationProps>) {
+      if (state.userAddress) {
+        state.userAddress.location = action.payload;
+      }
+    },
     savePaymentMethod(state, action) {
       state.userPaymentMethod = action.payload;
     },
@@ -51,5 +61,6 @@ export const {
   saveShippingAddress,
   savePaymentMethod,
   setUser,
+  saveSippingMapLocation,
 } = userSlice.actions;
 export default userSlice.reducer;

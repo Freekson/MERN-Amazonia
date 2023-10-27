@@ -29,6 +29,14 @@ export type UpdatedOrder = {
     city: string;
     postCode: string;
     country: string;
+    location: {
+      lat: number;
+      lng: number;
+      address: string;
+      name: string;
+      vicinity: string;
+      googleAddressId: string;
+    };
   };
   paymentMethod: string;
   itemsPrice: number;

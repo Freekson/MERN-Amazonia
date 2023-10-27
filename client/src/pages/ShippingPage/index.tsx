@@ -119,14 +119,7 @@ const ShippingPage: React.FC = () => {
               Choose Location On Map
             </Button>
           </div>
-          {userAddress?.location.lat ? (
-            <div>
-              LAT: {userAddress.location.lat}
-              LNG: {userAddress.location.lng}
-            </div>
-          ) : (
-            <div>No location</div>
-          )}
+
           <div className="mb-3">
             <Button
               type="button"

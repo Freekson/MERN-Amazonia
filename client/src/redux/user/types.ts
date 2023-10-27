@@ -18,7 +18,7 @@ export type TUserAddress = {
     address: string;
     name: string;
     vicinity: string;
-    googleAdressId: string;
+    googleAddressId: string;
   };
 };
 
@@ -26,4 +26,13 @@ export type setUserProps = {
   name: string;
   email: string;
   password: string;
+};
+
+export type setMapLocationProps = {
+  lat: number;
+  lng: number;
+  address: string;
+  name: string;
+  vicinity: string;
+  googleAddressId: string;
 };
